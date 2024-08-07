@@ -1,4 +1,6 @@
 // A module for creation and viewing of certificates
+//
+// Simplified functions to create a CA, CSR, CRL, and certificates. Also easy viewing, verifying of existing certificates.
 
 package main
 
