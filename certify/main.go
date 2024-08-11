@@ -12,7 +12,7 @@ import (
 type Certify struct{}
 
 // Build the base images
-func (m *Certify) Base(ctx context.Context) *dagger.Container {
+func (m *Certify) Build(ctx context.Context) *dagger.Container {
 	certigo_dir := dag.Git("https://github.com/square/certigo").Branch("master").Tree()
 	// get build context with dockerfile added
 	certigo := dag.Container().
@@ -36,7 +36,12 @@ func (m *Certify) Base(ctx context.Context) *dagger.Container {
 		})
 	return dag.Container().From("alpine").
 		WithWorkdir("/project").
-		WithMountedFile("/usr/bin/certstrap", certStrapCtr.File("/usr/bin/certstrap")).
-		WithMountedFile("/usr/bin/certigo", certigo.File("/go/src/certigo"))
+		WithFile("/usr/bin/certstrap", certStrapCtr.File("/usr/bin/certstrap")).
+		WithFile("/usr/bin/certigo", certigo.File("/go/src/certigo"))
+}
 
+// Build the base images
+func (m *Certify) Base(ctx context.Context) *dagger.Container {
+	return dag.Container().From("marvinmartian/certify").
+		WithWorkdir("/project")
 }
