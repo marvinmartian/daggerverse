@@ -1,23 +1,14 @@
-// A generated module for Diagrams functions
+// Generate diagrams from code using popular tools (D2,Mermaid)
 //
-// This module has been generated via dagger init and serves as a reference to
-// basic module structure as you get started with Dagger.
+// This module provides you the ability to pass in your diagram script language and get an image back.
 //
-// Two functions have been pre-created. You can modify, delete, or add to them,
-// as needed. They demonstrate usage of arguments and return types using simple
-// echo and grep commands. The functions can be called from the dagger CLI or
-// from one of the SDKs.
-//
-// The first line in this comment block is a short description line and the
-// rest is a long description with more detail on the module's purpose or usage,
-// if appropriate. All modules should have a short description.
+// The first language supported is D2 (https://d2lang.com/). Mermaid support is in progress.
 
 package main
 
 import (
 	"context"
 	"dagger/diagrams/internal/dagger"
-	"fmt"
 	"strings"
 )
 
@@ -54,47 +45,4 @@ func StripExtension(filename string) string {
 		return filename[:dot]
 	}
 	return filename
-}
-
-// Generate diagram using d2
-func (m *Diagrams) D2(
-	ctx context.Context,
-	// File to render with D2
-	file *dagger.File,
-	// Theme to use for render
-	theme string,
-) *dagger.File {
-
-	ctr := m.Base(ctx)
-	var flags []string
-
-	fileName, err := file.Name(ctx)
-	if err != nil {
-		fmt.Print(err)
-		return nil
-	}
-
-	if theme != "" {
-		flags = append(flags, fmt.Sprintf("--theme=%s", theme))
-	}
-
-	filePath := fmt.Sprintf("%s%s", projectRoot, fileName)
-	outFile := StripExtension(fileName)
-	outPath := fmt.Sprintf("%s%s.svg", projectRoot, outFile)
-
-	// Prepend the base command to the flags slice
-	cmd := append([]string{"d2", filePath}, flags...)
-	// Run the command command
-	return ctr.WithMountedFile(filePath, file).WithExec(cmd).File(outPath)
-}
-
-// List available themes
-func (m *Diagrams) Themes(
-	ctx context.Context,
-) (string, error) {
-
-	ctr := m.Base(ctx)
-
-	// Run the command command
-	return ctr.WithExec([]string{"d2", "themes"}).Stdout(ctx)
 }
