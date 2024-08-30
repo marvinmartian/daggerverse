@@ -6,7 +6,6 @@ import (
 	"fmt"
 )
 
-
 type D2 struct {
 	*dagger.Container
 }
@@ -36,8 +35,7 @@ func (d2 *D2) Render(
 	// +optional
 	animateInterval string,
 ) *dagger.File {
-	// ctr := d2
-	// return d2.Terminal()
+
 	var flags []string
 
 	fileName, err := file.Name(ctx)

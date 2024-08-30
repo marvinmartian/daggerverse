@@ -20,7 +20,7 @@ const projectRoot string = "/project/"
 func (m *Diagrams) Build(ctx context.Context) *dagger.Container {
 	d2_dir := dag.Git("https://github.com/terrastruct/d2").Tag("v0.6.6").Tree()
 
-	certigo := dag.Container().
+	d2 := dag.Container().
 		From("golang:alpine").
 		WithMountedCache("/go/pkg/mod", dag.CacheVolume("go-mod-121")).
 		WithEnvVariable("GOMODCACHE", "/go/pkg/mod").
@@ -31,7 +31,7 @@ func (m *Diagrams) Build(ctx context.Context) *dagger.Container {
 
 	return dag.Container().From("alpine").
 		WithWorkdir(projectRoot).
-		WithFile("/usr/bin/d2", certigo.File("/go/src/d2"))
+		WithFile("/usr/bin/d2", d2.File("/go/src/d2"))
 }
 
 // Setup base image
