@@ -1,5 +1,5 @@
 {
   "name": "diagrams",
   "sdk": "go",
-  "engineVersion": "v0.12.4"
+  "engineVersion": "v0.18.9"
 }
